@@ -2,6 +2,10 @@ package view;
 
 import javax.swing.JDialog;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Connection;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -9,6 +13,9 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Rectangle;
 import javax.swing.SwingConstants;
+
+import model.DAO;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.Cursor;
@@ -17,7 +24,14 @@ import javax.swing.ImageIcon;
 public class Login extends JDialog {
 	private JTextField inputLogin;
 	private JPasswordField inputSenha;
+	
 	public Login() {
+		addWindowListener(new WindowAdapter() {
+			public void windowActivated(WindowEvent e) {
+				statusConexaoBanco();
+			}
+		});
+		
 		setResizable(false);
 		setTitle("Login");
 		setBounds(new Rectangle(0, 0, 629, 387));
@@ -50,7 +64,7 @@ public class Login extends JDialog {
 		tituloLogin.setFont(new Font("Yu Gothic UI", Font.BOLD, 20));
 		tituloLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		tituloLogin.setHorizontalTextPosition(SwingConstants.CENTER);
-		tituloLogin.setBounds(0, 44, 613, 27);
+		tituloLogin.setBounds(0, 58, 613, 27);
 		getContentPane().add(tituloLogin);
 		
 		JButton btnLogin = new JButton("Entrar");
@@ -63,7 +77,29 @@ public class Login extends JDialog {
 		imgDatabase.setBounds(10, 273, 54, 58);
 		getContentPane().add(imgDatabase);
 	}
+	
+	DAO dao = new DAO();
+	
+	private void statusConexaoBanco() {
+		try {
+			Connection conexaoBanco = dao.conectar();
+			
+			if (conexaoBanco == null) {
+				imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOff.png")));
+			}
+			
+			else {
+				imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOn.png")));
+			}
+			conexaoBanco.close();
+		}
+		
+		catch (Exception e) {
+			System.out.println(e);
+		}
+	}
 
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run () {
