@@ -22,10 +22,12 @@ import java.awt.Cursor;
 import javax.swing.ImageIcon;
 
 public class Login extends JDialog {
-	private JTextField inputLogin;
-	private JPasswordField inputSenha;
+	
+	private JLabel imgDatabase;
 	
 	public Login() {
+		
+	
 		addWindowListener(new WindowAdapter() {
 			public void windowActivated(WindowEvent e) {
 				statusConexaoBanco();
@@ -49,13 +51,13 @@ public class Login extends JDialog {
 		txtSenha.setBounds(202, 217, 46, 14);
 		getContentPane().add(txtSenha);
 		
-		inputLogin = new JTextField();
+		JTextField inputLogin = new JTextField();
 		inputLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		inputLogin.setBounds(247, 154, 125, 20);
 		getContentPane().add(inputLogin);
 		inputLogin.setColumns(10);
 		
-		inputSenha = new JPasswordField();
+		JPasswordField inputSenha = new JPasswordField();
 		inputSenha.setHorizontalAlignment(SwingConstants.CENTER);
 		inputSenha.setBounds(247, 214, 125, 20);
 		getContentPane().add(inputSenha);
@@ -72,7 +74,7 @@ public class Login extends JDialog {
 		btnLogin.setBounds(258, 273, 89, 23);
 		getContentPane().add(btnLogin);
 		
-		JLabel imgDatabase = new JLabel("");
+		imgDatabase = new JLabel("");
 		imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOff.png")));
 		imgDatabase.setBounds(10, 273, 54, 58);
 		getContentPane().add(imgDatabase);
@@ -81,6 +83,7 @@ public class Login extends JDialog {
 	DAO dao = new DAO();
 	
 	private void statusConexaoBanco() {
+		
 		try {
 			Connection conexaoBanco = dao.conectar();
 			
@@ -92,6 +95,18 @@ public class Login extends JDialog {
 				imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOn.png")));
 			}
 			conexaoBanco.close();
+		}
+		
+		catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	private void logar() {
+		String read ="select * from funcionario where login=? and senha=md5(?)";
+		
+		try {
+			
 		}
 		
 		catch (Exception e) {
@@ -113,6 +128,7 @@ public class Login extends JDialog {
 					e.printStackTrace();
 				}
 			}
+			
 		});
 	}
 }
