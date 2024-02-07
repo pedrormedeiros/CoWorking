@@ -128,7 +128,7 @@ public class Login extends JDialog {
 			PreparedStatement executarSQL = conexaoBanco.prepareStatement(read);
 			
 			//Atribuir valores de login e senha 
-			//Substituir as interrogações ? ? pelo conteúdoda caixa de texto (input)
+			//Substituir as interrogações ? ? pelo conteúdo da caixa de texto (input)
 			executarSQL.setString(1, inputLogin.getText());
 			executarSQL.setString(2, inputSenha.getText());
 			
@@ -136,11 +136,16 @@ public class Login extends JDialog {
 			ResultSet resultadoExecucao = executarSQL.executeQuery();
 			
 			//Validação do funcionário (autenticação)
-			//resultadoExecucao.next() sigmifica que o login e a senha existem, ou seja, correspondem
+			//resultadoExecucao.next() significa que o login e a senha existem, ou seja, correspondem
 			
 			
 			if (resultadoExecucao.next()) {
-				System.out.println("Você logou!");
+				Home home = new Home ();
+				home.setVisible(true);		
+			}
+			
+			else {
+				System.out.println("Login e/ou senha inválidos");
 				
 			}
 			
