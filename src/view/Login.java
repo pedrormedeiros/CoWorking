@@ -111,7 +111,7 @@ public class Login extends JDialog {
 		RestrictedTextField validarSenha = new RestrictedTextField(inputSenha);
 		
 		//Limitar a somente 15 caracteres no campo senha
-		validarLogin.setLimit(20);
+		validarSenha.setLimit(20);
 		
 		//Desativar a tecla espaço no campo senha
 		
