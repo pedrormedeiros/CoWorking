@@ -3,108 +3,171 @@ package view;
 import javax.swing.JDialog;
 
 import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+
+import model.DAO;
+
 import javax.swing.JPasswordField;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
 import java.awt.Cursor;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class Funcionarios extends JDialog {
 	private JTextField inputNome;
-	private JTextField inputLogin;
 	private JTextField inputEmail;
-	private JTextField inputPerfil;
+	private JTextField inputLogin;
 	private JPasswordField inputSenha;
+	private JButton imgCreate;
+	private JButton imgUpdate;
+	private JButton imgDelete;
+
 	public Funcionarios() {
-		setBounds(new Rectangle(0, 0, 450, 300));
-		setResizable(false);
 		setTitle("Funcionários");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Funcionarios.class.getResource("/img/logo.png")));
+		setResizable(false);
+		setBounds(new Rectangle(300, 100, 588, 407));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/img/logo.png")));
 		getContentPane().setLayout(null);
 		
 		JLabel nomeFunc = new JLabel("Nome:");
-		nomeFunc.setBounds(10, 33, 46, 14);
+		nomeFunc.setBounds(24, 58, 46, 14);
 		getContentPane().add(nomeFunc);
 		
 		JLabel loginFunc = new JLabel("Login:");
-		loginFunc.setBounds(10, 80, 46, 14);
+		loginFunc.setBounds(24, 127, 46, 14);
 		getContentPane().add(loginFunc);
 		
 		JLabel senhaFunc = new JLabel("Senha:");
-		senhaFunc.setBounds(10, 120, 40, 14);
+		senhaFunc.setBounds(299, 127, 46, 14);
 		getContentPane().add(senhaFunc);
 		
-		JLabel emailFunc = new JLabel("Email:");
-		emailFunc.setBounds(209, 120, 34, 14);
+		JLabel emailFunc = new JLabel("E-mail:");
+		emailFunc.setBounds(299, 200, 46, 14);
 		getContentPane().add(emailFunc);
 		
 		JLabel perfilFunc = new JLabel("Perfil:");
-		perfilFunc.setBounds(10, 161, 46, 14);
+		perfilFunc.setBounds(24, 200, 46, 14);
 		getContentPane().add(perfilFunc);
 		
 		inputNome = new JTextField();
-		inputNome.setBounds(48, 30, 351, 20);
+		inputNome.setBounds(74, 55, 479, 20);
 		getContentPane().add(inputNome);
 		inputNome.setColumns(10);
 		
-		inputLogin = new JTextField();
-		inputLogin.setBounds(48, 77, 351, 20);
-		getContentPane().add(inputLogin);
-		inputLogin.setColumns(10);
-		
 		inputEmail = new JTextField();
-		inputEmail.setBounds(250, 117, 148, 20);
-		getContentPane().add(inputEmail);
 		inputEmail.setColumns(10);
+		inputEmail.setBounds(353, 197, 200, 20);
+		getContentPane().add(inputEmail);
 		
-		inputPerfil = new JTextField();
-		inputPerfil.setBounds(48, 158, 351, 20);
-		getContentPane().add(inputPerfil);
-		inputPerfil.setColumns(10);
+		inputLogin = new JTextField();
+		inputLogin.setColumns(10);
+		inputLogin.setBounds(74, 124, 200, 20);
+		getContentPane().add(inputLogin);
 		
 		inputSenha = new JPasswordField();
-		inputSenha.setBounds(51, 117, 148, 20);
+		inputSenha.setBounds(353, 124, 200, 20);
 		getContentPane().add(inputSenha);
 		
-		JLabel imgCreate = new JLabel("");
+		imgCreate = new JButton("");
 		imgCreate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		imgCreate.setIcon(new ImageIcon(Funcionarios.class.getResource("/img/create.png")));
-		imgCreate.setBounds(179, 189, 64, 61);
+		imgCreate.setBounds(304, 290, 65, 54);
 		getContentPane().add(imgCreate);
 		
-		JLabel imgUpdate = new JLabel("");
+		imgCreate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				adicionarFuncionario();
+			}
+		});
+		
+		imgUpdate = new JButton("");
 		imgUpdate.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		imgUpdate.setIcon(new ImageIcon(Funcionarios.class.getResource("/img/update.png")));
-		imgUpdate.setBounds(261, 189, 64, 61);
+		imgUpdate.setBounds(398, 290, 65, 54);
 		getContentPane().add(imgUpdate);
 		
-		JLabel imgDelete = new JLabel("");
+		imgDelete = new JButton("");
 		imgDelete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		imgDelete.setIcon(new ImageIcon(Funcionarios.class.getResource("/img/delete.png")));
-		imgDelete.setBounds(335, 189, 64, 61);
+		imgDelete.setBounds(488, 290, 65, 54);
 		getContentPane().add(imgDelete);
 		
-	}
+		inputPerfil = new JComboBox();
+		inputPerfil.setModel(new DefaultComboBoxModel(new String[] {"", "Administrador", "Gerência", "Atendimento", "Suporte"}));
+		inputPerfil.setBounds(74, 196, 200, 22);
+		getContentPane().add(inputPerfil);
 
+	}
+	
+	//Criar um objeto da classe DAO para estabelecer conexão com banco
+	DAO dao = new DAO();
+	private JComboBox inputPerfil;
+	
+	private void adicionarFuncionario() {
+		String create = "insert into funcionario (nomeFunc, login, senha, email, perfil) values (?, ?, md5(?), ?, ?);";
+		
+		
+		try {
+			// Estabelecer a conexão
+			Connection conexaoBanco = dao.conectar();
+			
+			// Preparar a execusão do script SQL
+			PreparedStatement executarSQL = conexaoBanco.prepareStatement(create);
+			
+			//Substituir os pontos de interrogação pelo conteúdo das caixas de texto (inputs)
+			executarSQL.setString(1, inputNome.getText());
+			executarSQL.setString(2, inputLogin.getText());
+			executarSQL.setString(3, inputSenha.getText());
+						
+			executarSQL.setString(4, inputEmail.getText());
+			
+			executarSQL.setString(5, inputPerfil.getSelectedItem().toString());
+			
+			//Executar os comandos SQL e inserir o funcionário no banco de dados
+			executarSQL.executeUpdate();
+			
+			conexaoBanco.close();
+			
+		} 
+		
+		catch (SQLIntegrityConstraintViolationException error) {
+			JOptionPane.showMessageDialog(null, "Login em uso. \nEscolha outro nome de usuário.");
+						
+		}
+		
+		catch (Exception e) {
+			System.out.println(e);
+		
+	}
+}
+	
+	
+	
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run () {
+			public void run() {
 				try {
-					Funcionarios dialog = new Funcionarios ();
+					Funcionarios dialog = new Funcionarios();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
-				}
-				
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			
 		});
 	}
 }
-
-

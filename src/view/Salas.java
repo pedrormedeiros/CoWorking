@@ -3,37 +3,31 @@ package view;
 import javax.swing.JDialog;
 
 import java.awt.EventQueue;
-import java.awt.Toolkit;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 
 public class Salas extends JDialog {
-	public Salas() {
-		setBounds(new Rectangle(0, 0, 450, 300));
-		setResizable(false);
-		setTitle("Salas");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Salas.class.getResource("/img/logo.png")));
-		getContentPane().setLayout(null);
-		
-	}
 
+	public Salas() {
+		setTitle("Salas");
+		setResizable(false);
+		setBounds(new Rectangle(300, 100, 613, 362));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/img/logo.png")));
+		getContentPane().setLayout(null);
+
+	}
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run () {
+			public void run() {
 				try {
-					Salas dialog = new Salas ();
+					Salas dialog = new Salas();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
-				}
-				
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			
 		});
 	}
 }
-
-	
-
-

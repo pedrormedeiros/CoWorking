@@ -1,7 +1,6 @@
 package view;
-
 import java.awt.EventQueue;
-
+import java.awt.Rectangle;
 
 import javax.swing.JDialog;
 import java.awt.Toolkit;
@@ -12,59 +11,54 @@ import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.util.Date;
 
-import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import java.awt.Rectangle;
 import java.awt.Cursor;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.JLabel;
 
-public class Home extends JDialog{
+public class Home extends JDialog {
 	
-	public JLabel txtUsuarioLogado;
 	public JPanel panelUsuario;
+	public JLabel txtUsuarioLogado;
 	public JLabel txtData;
-	
-	
+	public JLabel txtPerfilLogado;
 	
 	//Construtor
 	public Home() {
-		 addWindowListener (new WindowAdapter() {
-			 public void windowActivated(WindowEvent e) {
-				 Date dataSistema = new Date();
-				 DateFormat formatadorData = DateFormat.getDateInstance(DateFormat.FULL);
-				 txtData.setText(formatadorData.format(dataSistema));
-			 }
-		 });
-		 
-		setBounds(new Rectangle(452, 301, 452, 301));
-		setResizable(false);
+		addWindowListener (new WindowAdapter() {
+			public void windowActivated(WindowEvent e) {
+				Date dataSistema = new Date();
+				DateFormat formatadorData = DateFormat.getDateInstance(DateFormat.FULL);
+				txtData.setText(formatadorData.format(dataSistema));
+			}
+		});
+
 		setTitle("Home");
+		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Home.class.getResource("/img/logo.png")));
+		setBounds(new Rectangle(300, 100, 613, 362));
 		getContentPane().setLayout(null);
 		
 		JButton btnUser = new JButton("");
 		btnUser.setBorderPainted(false);
 		btnUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnUser.setIcon(new ImageIcon(Home.class.getResource("/img/user.png")));
-		btnUser.setBounds(24, 60, 89, 95);
+		btnUser.setBounds(71, 101, 96, 96);
 		getContentPane().add(btnUser);
 		
-			btnUser.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Funcionarios funcionarios = new Funcionarios();
-					funcionarios.setVisible(true);
-				}
-				
-			});
-			
+		btnUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Funcionarios funcionarios = new Funcionarios();
+				funcionarios.setVisible(true);
+			}
+		});
 		
 		JButton btnRoom = new JButton("");
 		btnRoom.setBorderPainted(false);
 		btnRoom.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRoom.setIcon(new ImageIcon(Home.class.getResource("/img/room.png")));
-		btnRoom.setBounds(159, 60, 89, 95);
+		btnRoom.setBounds(237, 101, 96, 96);
 		getContentPane().add(btnRoom);
 		
 		btnRoom.addActionListener(new ActionListener() {
@@ -72,58 +66,52 @@ public class Home extends JDialog{
 				Salas salas = new Salas();
 				salas.setVisible(true);
 			}
-			
 		});
 		
 		JButton btnReserve = new JButton("");
 		btnReserve.setBorderPainted(false);
 		btnReserve.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnReserve.setIcon(new ImageIcon(Home.class.getResource("/img/reserve.png")));
-		btnReserve.setBounds(296, 60, 116, 95);
+		btnReserve.setBounds(387, 101, 96, 96);
 		getContentPane().add(btnReserve);
 		
 		panelUsuario = new JPanel();
-		panelUsuario.setBounds(0, 215, 436, 47);
+		panelUsuario.setBounds(0, 264, 597, 60);
 		getContentPane().add(panelUsuario);
 		panelUsuario.setLayout(null);
 		
 		txtUsuarioLogado = new JLabel("");
-		txtUsuarioLogado.setHorizontalAlignment(SwingConstants.LEFT);
-		txtUsuarioLogado.setBounds(10, 11, 174, 25);
+		txtUsuarioLogado.setBounds(10, 0, 157, 21);
 		panelUsuario.add(txtUsuarioLogado);
 		
 		txtData = new JLabel("");
-		txtData.setHorizontalAlignment(SwingConstants.LEFT);
-		txtData.setBounds(213, 11, 213, 25);
+		txtData.setBounds(352, 18, 235, 21);
 		panelUsuario.add(txtData);
+		
+		txtPerfilLogado = new JLabel("");
+		txtPerfilLogado.setBounds(10, 28, 157, 21);
+		panelUsuario.add(txtPerfilLogado);
 		
 		btnReserve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Reservas reservas = new Reservas();
-				reservas.setVisible(true);
+				reservas.setVisible(true);		
 			}
-			
 		});
-		
 	}
-		
-
+	
+	//Implementação
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
-			public void run () {
+			public void run() {
 				try {
-					Home dialog = new Home ();
+					Home dialog = new Home();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
-				}
-				
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			
-		});
+		});	
 	}
 }
-
-			
