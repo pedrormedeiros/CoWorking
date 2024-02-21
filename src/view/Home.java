@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import java.awt.Cursor;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import java.awt.Color;
 
 public class Home extends JDialog {
 	
@@ -37,10 +38,11 @@ public class Home extends JDialog {
 		setTitle("Home");
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Home.class.getResource("/img/logo.png")));
-		setBounds(new Rectangle(300, 100, 613, 362));
+		setBounds(new Rectangle(300, 100, 595, 378));
 		getContentPane().setLayout(null);
 		
 		JButton btnUser = new JButton("");
+		btnUser.setBackground(new Color(240, 240, 240));
 		btnUser.setBorderPainted(false);
 		btnUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnUser.setIcon(new ImageIcon(Home.class.getResource("/img/user.png")));
@@ -55,6 +57,7 @@ public class Home extends JDialog {
 		});
 		
 		JButton btnRoom = new JButton("");
+		btnRoom.setBackground(new Color(240, 240, 240));
 		btnRoom.setBorderPainted(false);
 		btnRoom.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRoom.setIcon(new ImageIcon(Home.class.getResource("/img/room.png")));
@@ -69,6 +72,7 @@ public class Home extends JDialog {
 		});
 		
 		JButton btnReserve = new JButton("");
+		btnReserve.setBackground(new Color(240, 240, 240));
 		btnReserve.setBorderPainted(false);
 		btnReserve.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnReserve.setIcon(new ImageIcon(Home.class.getResource("/img/reserve.png")));
@@ -76,20 +80,20 @@ public class Home extends JDialog {
 		getContentPane().add(btnReserve);
 		
 		panelUsuario = new JPanel();
-		panelUsuario.setBounds(0, 264, 597, 60);
+		panelUsuario.setBounds(0, 268, 581, 60);
 		getContentPane().add(panelUsuario);
 		panelUsuario.setLayout(null);
 		
 		txtUsuarioLogado = new JLabel("");
-		txtUsuarioLogado.setBounds(10, 0, 157, 21);
+		txtUsuarioLogado.setBounds(38, 0, 157, 21);
 		panelUsuario.add(txtUsuarioLogado);
 		
 		txtData = new JLabel("");
-		txtData.setBounds(352, 18, 235, 21);
+		txtData.setBounds(315, 11, 235, 21);
 		panelUsuario.add(txtData);
 		
 		txtPerfilLogado = new JLabel("");
-		txtPerfilLogado.setBounds(10, 28, 157, 21);
+		txtPerfilLogado.setBounds(38, 28, 157, 21);
 		panelUsuario.add(txtPerfilLogado);
 		
 		btnReserve.addActionListener(new ActionListener() {
